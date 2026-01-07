@@ -1,0 +1,85 @@
+{
+  "summary": {
+    "total_issues": 5,
+    "high": 3,
+    "medium": 1,
+    "low": 1
+  },
+  "details": [
+    {
+      "id": 1,
+      "api_name": "createOrder",
+      "doc_file": "README_backup.md",
+      "section": "Parameters — quantity",
+      "issue_type": "Incorrect parameter constraints and required flag",
+      "severity": "High",
+      "documented_behavior": "| quantity | number | no | Number of items (0–10) |",
+      "actual_behavior": "`quantity` is required (present on the input type) and the implementation throws an error when quantity < 1 or quantity > 5",
+      "citations": {
+        "doc": "README_backup.md — table row: `| quantity | number | no | Number of items (0–10) |`",
+        "code": "api.ts — CreateOrderInput (lines 3-7) and validation/throw in createOrder (lines 20-23)"
+      },
+      "fix_summary": "Mark `quantity` as required and document the allowed range (1–5) and the thrown error when out of range."
+    },
+    {
+      "id": 2,
+      "api_name": "createOrder",
+      "doc_file": "README_backup.md",
+      "section": "Parameters — couponCode",
+      "issue_type": "Incorrect required flag",
+      "severity": "Medium",
+      "documented_behavior": "| couponCode | string | yes | Discount coupon code |",
+      "actual_behavior": "`couponCode` is optional on the input type (`couponCode?: string`) and the implementation does not require it.",
+      "citations": {
+        "doc": "README_backup.md — table row: `| couponCode | string | yes | Discount coupon code |`",
+        "code": "api.ts — CreateOrderInput: `couponCode?: string;` (line 6)"
+      },
+      "fix_summary": "Mark `couponCode` as optional in the documentation."
+    },
+    {
+      "id": 3,
+      "api_name": "createOrder",
+      "doc_file": "README_backup.md",
+      "section": "Returns",
+      "issue_type": "Incorrect return value structure",
+      "severity": "High",
+      "documented_behavior": "Returns: `{ success: boolean; orderId?: string; }`",
+      "actual_behavior": "Returns `{ orderId: string; totalPrice: number }` — the function always returns `orderId` and `totalPrice` (no `success` field).",
+      "citations": {
+        "doc": "README_backup.md — Returns block:\n```ts\n{\n  success: boolean;\n  orderId?: string;\n}```",
+        "code": "api.ts — OrderResult (lines 9-12) and return statement in createOrder (lines 25-28)"
+      },
+      "fix_summary": "Update the documented return type to `{ orderId: string; totalPrice: number }` and describe `totalPrice` calculation."
+    },
+    {
+      "id": 4,
+      "api_name": "createOrder",
+      "doc_file": "README_backup.md",
+      "section": "Errors / Validation",
+      "issue_type": "Missing error / exception documentation",
+      "severity": "High",
+      "documented_behavior": "No validation errors or exceptions are documented for invalid `quantity`.",
+      "actual_behavior": "The implementation throws `new Error(\"Invalid quantity\")` when quantity is outside 1–5.",
+      "citations": {
+        "doc": "README_backup.md — (no "Errors" section; parameters and returns do not mention thrown errors)",
+        "code": "api.ts — validation and throw in createOrder (lines 20-23)"
+      },
+      "fix_summary": "Add an Errors section describing the thrown `Error(\"Invalid quantity\")` when `quantity` is <1 or >5."
+    },
+    {
+      "id": 5,
+      "api_name": "createOrder",
+      "doc_file": "README_backup.md",
+      "section": "Returns — implementation details",
+      "issue_type": "Missing implementation detail",
+      "severity": "Low",
+      "documented_behavior": "The original docs do not describe how `orderId` and price are produced.",
+      "actual_behavior": "Implementation returns a fixed `orderId` of `\"ORD-001\"` and computes `totalPrice` as `quantity * 100`.",
+      "citations": {
+        "doc": "README_backup.md — Returns block (no `orderId`/`totalPrice` fields present)",
+        "code": "api.ts — return object in createOrder (lines 25-28)"
+      },
+      "fix_summary": "Document that `orderId` is currently the fixed string `\"ORD-001\"` and that `totalPrice` is `quantity * 100`."
+    }
+  ]
+}
