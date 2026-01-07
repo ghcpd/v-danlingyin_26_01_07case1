@@ -1,0 +1,165 @@
+oswe-mini-m23a3s430  ：：
+User: prompt
+Prompt — Documentation & Knowledge (API Docs)
+You are a senior backend engineer and API documentation auditor.
+Your task is to audit API documentation and verify whether the documented API contracts match the actual implementation in the source code.
+--------------------------------------------------------------------------------
+Your responsibilities:
+1.Identify incorrect or incomplete API documentation
+- Review all provided API documentation files (e.g. README.md, docs/api.md)
+- Review corresponding source code implementations
+- Identify mismatches including:
+- Incorrect parameter definitions (type, required/optional)
+- Incorrect return value structure
+- Missing error cases or exceptions
+- Missing or incorrect HTTP status codes
+- Missing constraints enforced in code
+For each issue, report:
+- Documentation file name
+- API name / endpoint / function name
+- Section or heading
+- What the documentation states
+- What the code actually does
+--------------------------------------------------------------------------------
+2.Provide citation evidence (MANDATORY)
+For every issue, provide exact citations:
+- Documentation citation:
+- File name + section heading or quoted text
+- Code citation:
+- File name + exact line numbers
+--------------------------------------------------------------------------------
+3.Classify severity
+Classify each issue as:
+- High — causes incorrect API usage, runtime error, or integration failure
+- Medium — misleading but may still work
+- Low — incomplete or unclear but technically minor
+--------------------------------------------------------------------------------
+4.Produce corrected API documentation
+Generate:
+- README_backup.md → unchanged copy of original documentation
+- README.md → corrected API documentation that matches code behavior exactly
+Rules:
+- MUST NOT modify any source code
+- Only documentation may be changed
+- All API contracts must be precise and explicit
+--------------------------------------------------------------------------------
+5.Generate API documentation audit report (report.json)
+{
+  "summary": {
+    "total_issues": 0,
+    "high": 0,
+    "medium": 0,
+    "low": 0
+  },
+  "details": [
+    {
+      "id": 1,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "API: createOrder",
+      "issue_type": "Incorrect API Documentation",
+      "severity": "High",
+      "documented_behavior": "",
+      "actual_behavior": "",
+      "citations": {
+        "doc": "",
+        "code": ""
+      },
+      "fix_summary": ""
+    }
+  ]
+}
+
+--------------------------------------------------------------------------------
+6.Generate citation evidence file
+Produce citations.md containing:
+- Side-by-side comparison:
+- Documented API contract
+- Actual code implementation
+- Clear explanation of each mismatch
+--------------------------------------------------------------------------------
+7.Generate audit README
+Produce AUDIT_README.md explaining:
+- Scope of the API audit
+- Types of API documentation issues found
+- How citations were extracted
+- How reviewers can manually verify correctness
+--------------------------------------------------------------------------------
+📌 Rules for the Model
+- MUST NOT hallucinate APIs not present in code
+- MUST NOT invent documentation files
+- MUST provide exact citations (file + line numbers or quoted text)
+- MUST NOT modify source code
+- MUST reason strictly from provided files
+- MUST keep output structured, minimal, and verifiable
+
+GitHub Copilot: I'll inspect the implementation and the README to find mismatches, then create corrected docs and the audit files.
+
+Read [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/oswe-mini-m23a3s430/api.ts)
+
+Read [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/oswe-mini-m23a3s430/README.md)
+
+Created [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/oswe-mini-m23a3s430/README_backup.md)
+
+Using "Replace String in File"
+
+
+```
+
+```
+
+
+Created [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/oswe-mini-m23a3s430/report.json)
+
+Created [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/oswe-mini-m23a3s430/citations.md)
+
+Created [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/oswe-mini-m23a3s430/AUDIT_README.md)
+
+Perfect — I found five documentation issues (constraints, required flags, return shape, missing error, and a minor implementation detail). I'll summarize the findings, show exact citations, and list the audit files I added.## Audit summary ✅
+- Total issues: **5** (High: 3, Medium: 1, Low: 1)  
+- I updated the docs and produced audit artifacts to make verification easy.
+
+---
+
+## Issues (concise)
+
+1. High — Incorrect `quantity` constraints & required flag  
+   - Documentation: README_backup.md — table row: `| quantity | number | no | Number of items (0–10) |`  
+   - Code: api.ts — `CreateOrderInput` and validation/throw (lines **3–7**, **20–23**)  
+   - Fix: Mark `quantity` as required and document allowed range **1–5** and the thrown error.
+
+2. Medium — `couponCode` documented as required but is optional  
+   - Documentation: README_backup.md — `| couponCode | string | yes | Discount coupon code |`  
+   - Code: api.ts — `couponCode?: string;` (line **6**)  
+   - Fix: Mark `couponCode` optional.
+
+3. High — Incorrect return value structure  
+   - Documentation: README_backup.md — Returns block:
+     ```ts
+     { success: boolean; orderId?: string; }
+     ```
+   - Code: api.ts — `OrderResult` and return object (lines **9–12**, **25–28**) — returns `{ orderId: string; totalPrice: number }`.  
+   - Fix: Document `{ orderId: string; totalPrice: number }` and describe `totalPrice`.
+
+4. High — Missing error/validation documentation  
+   - Documentation: README_backup.md — no errors documented.  
+   - Code: api.ts — validation and throw `new Error("Invalid quantity")` (lines **20–23**)  
+   - Fix: Add Errors section describing the thrown error for out-of-range `quantity`.
+
+5. Low — Missing implementation details for return values  
+   - Documentation: README_backup.md — no description of how return values are produced.  
+   - Code: api.ts — return uses fixed `orderId: "ORD-001"` and `totalPrice: input.quantity * 100` (lines **25–28**)  
+   - Fix: Note that `orderId` is currently fixed and show `totalPrice` calculation.
+
+---
+
+## Files I added/updated 🔧
+- Created: README_backup.md (original copy)
+- Updated: README.md (now matches implementation)
+- Created: report.json (audit report)
+- Created: citations.md (side-by-side comparisons)
+- Created: AUDIT_README.md (scope & verification notes)
+
+If you want, I can add a tiny unit test demonstrating the thrown error and return value — no source changes required.
+
+Made changes.
