@@ -1,0 +1,85 @@
+{
+  "summary": {
+    "total_issues": 5,
+    "high": 5,
+    "medium": 0,
+    "low": 0
+  },
+  "details": [
+    {
+      "id": 1,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "Parameters table - quantity row",
+      "issue_type": "Incorrect Parameter Range",
+      "severity": "High",
+      "documented_behavior": "quantity is optional (no) and accepts range 0–10",
+      "actual_behavior": "quantity is required and only accepts range 1–5 (enforced by validation: quantity < 1 || quantity > 5 throws error)",
+      "citations": {
+        "doc": "README.md line 10: '| quantity | number | no | Number of items (0–10) |'",
+        "code": "api.ts lines 20-21: 'if (input.quantity < 1 || input.quantity > 5) { throw new Error(\"Invalid quantity\"); }'"
+      },
+      "fix_summary": "Changed quantity from optional (no) to required (yes) and updated range from 0–10 to 1–5"
+    },
+    {
+      "id": 2,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "Parameters table - couponCode row",
+      "issue_type": "Incorrect Parameter Requirement",
+      "severity": "High",
+      "documented_behavior": "couponCode is required (yes)",
+      "actual_behavior": "couponCode is optional (marked with ? in interface: couponCode?: string)",
+      "citations": {
+        "doc": "README.md line 11: '| couponCode | string | yes | Discount coupon code |'",
+        "code": "api.ts line 5: 'couponCode?: string;' (optional marker ?)"
+      },
+      "fix_summary": "Changed couponCode from required (yes) to optional (no)"
+    },
+    {
+      "id": 3,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "Returns section",
+      "issue_type": "Incorrect Return Type",
+      "severity": "High",
+      "documented_behavior": "Returns object with success (boolean) and optional orderId (string)",
+      "actual_behavior": "Returns OrderResult with orderId (string) and totalPrice (number). No success field. orderId is always present.",
+      "citations": {
+        "doc": "README.md lines 16-19: '{ success: boolean; orderId?: string; }'",
+        "code": "api.ts lines 8-10: 'export interface OrderResult { orderId: string; totalPrice: number; }'"
+      },
+      "fix_summary": "Replaced success boolean field with totalPrice number field and changed orderId from optional (?) to required"
+    },
+    {
+      "id": 4,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "Returns section",
+      "issue_type": "Missing Return Field",
+      "severity": "High",
+      "documented_behavior": "Returns only success and orderId fields",
+      "actual_behavior": "Also returns totalPrice (number) calculated as quantity * 100",
+      "citations": {
+        "doc": "README.md lines 16-19: Documentation shows only 'success' and 'orderId' in return value",
+        "code": "api.ts lines 22-25: 'return { orderId: \"ORD-001\", totalPrice: input.quantity * 100 };'"
+      },
+      "fix_summary": "Added totalPrice field to documented return type"
+    },
+    {
+      "id": 5,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "Errors / Exceptions",
+      "issue_type": "Missing Error Documentation",
+      "severity": "High",
+      "documented_behavior": "No error cases documented",
+      "actual_behavior": "Function throws Error when quantity < 1 or quantity > 5",
+      "citations": {
+        "doc": "README.md: No 'Errors' or 'Exceptions' section present",
+        "code": "api.ts lines 17-19: Comment states 'Throws error if quantitys' and lines 20-21 contain validation logic"
+      },
+      "fix_summary": "Added new 'Errors' section documenting validation errors"
+    }
+  ]
+}

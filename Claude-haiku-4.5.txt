@@ -1,0 +1,196 @@
+Claude-haiku-4.5  ：：
+User: 
+Prompt — Documentation & Knowledge (API Docs)
+You are a senior backend engineer and API documentation auditor.
+Your task is to audit API documentation and verify whether the documented API contracts match the actual implementation in the source code.
+--------------------------------------------------------------------------------
+Your responsibilities:
+1.Identify incorrect or incomplete API documentation
+- Review all provided API documentation files (e.g. README.md, docs/api.md)
+- Review corresponding source code implementations
+- Identify mismatches including:
+- Incorrect parameter definitions (type, required/optional)
+- Incorrect return value structure
+- Missing error cases or exceptions
+- Missing or incorrect HTTP status codes
+- Missing constraints enforced in code
+For each issue, report:
+- Documentation file name
+- API name / endpoint / function name
+- Section or heading
+- What the documentation states
+- What the code actually does
+--------------------------------------------------------------------------------
+2.Provide citation evidence (MANDATORY)
+For every issue, provide exact citations:
+- Documentation citation:
+- File name + section heading or quoted text
+- Code citation:
+- File name + exact line numbers
+--------------------------------------------------------------------------------
+3.Classify severity
+Classify each issue as:
+- High — causes incorrect API usage, runtime error, or integration failure
+- Medium — misleading but may still work
+- Low — incomplete or unclear but technically minor
+--------------------------------------------------------------------------------
+4.Produce corrected API documentation
+Generate:
+- README_backup.md → unchanged copy of original documentation
+- README.md → corrected API documentation that matches code behavior exactly
+Rules:
+- MUST NOT modify any source code
+- Only documentation may be changed
+- All API contracts must be precise and explicit
+--------------------------------------------------------------------------------
+5.Generate API documentation audit report (report.json)
+{
+  "summary": {
+    "total_issues": 0,
+    "high": 0,
+    "medium": 0,
+    "low": 0
+  },
+  "details": [
+    {
+      "id": 1,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "API: createOrder",
+      "issue_type": "Incorrect API Documentation",
+      "severity": "High",
+      "documented_behavior": "",
+      "actual_behavior": "",
+      "citations": {
+        "doc": "",
+        "code": ""
+      },
+      "fix_summary": ""
+    }
+  ]
+}
+
+--------------------------------------------------------------------------------
+6.Generate citation evidence file
+Produce citations.md containing:
+- Side-by-side comparison:
+- Documented API contract
+- Actual code implementation
+- Clear explanation of each mismatch
+--------------------------------------------------------------------------------
+7.Generate audit README
+Produce AUDIT_README.md explaining:
+- Scope of the API audit
+- Types of API documentation issues found
+- How citations were extracted
+- How reviewers can manually verify correctness
+--------------------------------------------------------------------------------
+📌 Rules for the Model
+- MUST NOT hallucinate APIs not present in code
+- MUST NOT invent documentation files
+- MUST provide exact citations (file + line numbers or quoted text)
+- MUST NOT modify source code
+- MUST reason strictly from provided files
+- MUST keep output structured, minimal, and verifiable
+
+GitHub Copilot: I'll conduct a comprehensive API documentation audit by analyzing the README.md against the api.ts implementation. Let me start by examining both files closely. 
+
+Read [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/Claude-haiku-4.5/README.md)
+
+Read [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/Claude-haiku-4.5/api.ts)
+
+I've identified **5 critical documentation issues**. Now I'll generate all required audit artifacts. 
+
+Created [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/Claude-haiku-4.5/README_backup.md)
+
+Created [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/Claude-haiku-4.5/README.md)
+
+Created [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/Claude-haiku-4.5/report.json)
+
+Created [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/Claude-haiku-4.5/citations.md)
+
+Created [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/Claude-haiku-4.5/AUDIT_README.md)
+
+Now I'll replace the README.md with the corrected version: 
+
+Using "Replace String in File"
+
+Let me check the exact content: 
+
+Read [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/Claude-haiku-4.5/README.md)
+
+I see the issue - there are backticks at the start. Let me fix this: 
+
+Using "Replace String in File"
+
+Let me try with the exact spacing from the file output: 
+
+Using "Replace String in File"
+
+
+```
+
+```
+
+
+Using "Replace String in File"
+
+
+```
+
+```
+
+
+Using "Replace String in File"
+
+Read [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/Claude-haiku-4.5/README.md#15-15), lines 15 to 22
+
+Using "Replace String in File"
+
+Let me check if there's whitespace issue: 
+
+Ran terminal command: cat README.md
+
+Let me complete the README update by replacing the return section properly: 
+
+Using "Replace String in File"
+
+
+```
+
+```
+Perfect! Now let me verify all files were created correctly: 
+
+Read [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/Claude-haiku-4.5)
+
+Excellent! Let me verify the corrected README is correct: 
+
+Read [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/Claude-haiku-4.5/README.md)
+
+Perfect! Here's the **API Documentation Audit Summary**:
+
+## ✅ Audit Complete
+
+I've identified **5 HIGH-severity issues** where documentation mismatches code behavior:
+
+### Issues Found:
+
+1. **Quantity Range Error**: Docs claim 0–10, code enforces 1–5
+2. **Coupon Code Requirement**: Docs mark required, code makes optional
+3. **Return Type Mismatch**: Docs promise `{ success, orderId? }`, code returns `{ orderId, totalPrice }`
+4. **Missing Field**: `totalPrice` returned but undocumented
+5. **Missing Error Documentation**: Function throws on invalid quantity, not documented
+
+### Deliverables Generated:
+
+| File | Purpose |
+|------|---------|
+| README.md | ✅ Corrected documentation matching code |
+| README_backup.md | Original documentation preserved |
+| report.json | Structured audit report with severity classification |
+| citations.md | Side-by-side doc vs. code evidence with exact line numbers |
+| AUDIT_README.md | Comprehensive audit methodology and verification guide |
+
+All corrections ensure the API documentation now **precisely reflects actual code behavior**. The source code (api.ts) remains unchanged—only documentation was corrected as required.
+
+Made changes.
