@@ -1,0 +1,169 @@
+grok-fast   ：：
+
+User: 
+Prompt — Documentation & Knowledge (API Docs)
+You are a senior backend engineer and API documentation auditor.
+Your task is to audit API documentation and verify whether the documented API contracts match the actual implementation in the source code.
+--------------------------------------------------------------------------------
+Your responsibilities:
+1.Identify incorrect or incomplete API documentation
+- Review all provided API documentation files (e.g. README.md, docs/api.md)
+- Review corresponding source code implementations
+- Identify mismatches including:
+- Incorrect parameter definitions (type, required/optional)
+- Incorrect return value structure
+- Missing error cases or exceptions
+- Missing or incorrect HTTP status codes
+- Missing constraints enforced in code
+For each issue, report:
+- Documentation file name
+- API name / endpoint / function name
+- Section or heading
+- What the documentation states
+- What the code actually does
+--------------------------------------------------------------------------------
+2.Provide citation evidence (MANDATORY)
+For every issue, provide exact citations:
+- Documentation citation:
+- File name + section heading or quoted text
+- Code citation:
+- File name + exact line numbers
+--------------------------------------------------------------------------------
+3.Classify severity
+Classify each issue as:
+- High — causes incorrect API usage, runtime error, or integration failure
+- Medium — misleading but may still work
+- Low — incomplete or unclear but technically minor
+--------------------------------------------------------------------------------
+4.Produce corrected API documentation
+Generate:
+- README_backup.md → unchanged copy of original documentation
+- README.md → corrected API documentation that matches code behavior exactly
+Rules:
+- MUST NOT modify any source code
+- Only documentation may be changed
+- All API contracts must be precise and explicit
+--------------------------------------------------------------------------------
+5.Generate API documentation audit report (report.json)
+{
+  "summary": {
+    "total_issues": 0,
+    "high": 0,
+    "medium": 0,
+    "low": 0
+  },
+  "details": [
+    {
+      "id": 1,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "API: createOrder",
+      "issue_type": "Incorrect API Documentation",
+      "severity": "High",
+      "documented_behavior": "",
+      "actual_behavior": "",
+      "citations": {
+        "doc": "",
+        "code": ""
+      },
+      "fix_summary": ""
+    }
+  ]
+}
+
+--------------------------------------------------------------------------------
+6.Generate citation evidence file
+Produce citations.md containing:
+- Side-by-side comparison:
+- Documented API contract
+- Actual code implementation
+- Clear explanation of each mismatch
+--------------------------------------------------------------------------------
+7.Generate audit README
+Produce AUDIT_README.md explaining:
+- Scope of the API audit
+- Types of API documentation issues found
+- How citations were extracted
+- How reviewers can manually verify correctness
+--------------------------------------------------------------------------------
+📌 Rules for the Model
+- MUST NOT hallucinate APIs not present in code
+- MUST NOT invent documentation files
+- MUST provide exact citations (file + line numbers or quoted text)
+- MUST NOT modify source code
+- MUST reason strictly from provided files
+- MUST keep output structured, minimal, and verifiable
+
+GitHub Copilot: Optimizing tool selection...I'll audit the API documentation against the source code implementation. Let me analyze the discrepancies and create the required files. 
+
+Created 6 todos
+
+After analyzing api.ts and README.md, I've identified **5 critical discrepancies** between the documentation and implementation:
+
+## Critical Issues Found:
+
+1. **quantity parameter** - Documented as optional, but is required in code
+2. **quantity range** - Documented as 0–10, actual constraint is 1–5
+3. **couponCode parameter** - Documented as required, but is optional in code
+4. **Return type** - Completely different structure
+5. **Missing error documentation** - No mention of thrown exceptions
+
+Let me create all required audit files: 
+
+Starting: *Create README_backup.md* (2/6)
+
+Created [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/grok-fast/README_backup.md)
+
+Created [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/grok-fast/README.md)
+
+Created [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/grok-fast/report.json)
+
+Created [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/grok-fast/citations.md)
+
+Created [](file:///c%3A/Users/v-danlingyin/Documents/microsoft_projects_files/bugBash/26.1/1.7/case1/grok-fast/AUDIT_README.md)
+
+Using "Replace String in File"
+
+
+```
+
+```
+
+
+Completed: *Create README_backup.md* (2/6)
+
+## ✅ API Documentation Audit Complete
+
+### Summary
+**5 critical issues** found between documentation and implementation:
+
+| Severity | Count |
+|----------|-------|
+| **High** | 4 |
+| **Medium** | 1 |
+| **Low** | 0 |
+
+### Key Issues Identified
+
+1. **quantity** - Documented as optional, actually **required**
+2. **quantity range** - Documented as 0–10, actually **1–5**
+3. **couponCode** - Documented as required, actually **optional**
+4. **Return type** - Documented `{success, orderId?}`, actually **`{orderId, totalPrice}`**
+5. **Missing errors** - No documentation for thrown **"Invalid quantity"** exception
+
+### Files Generated
+
+✅ README_backup.md - Original documentation preserved  
+✅ README.md - Corrected documentation matching code  
+✅ report.json - Structured audit with all findings  
+✅ citations.md - Side-by-side evidence comparison  
+✅ AUDIT_README.md - Audit methodology & verification guide  
+
+### Verification
+All issues include exact citations:
+- **Documentation**: File + section/quoted text
+- **Code**: api.ts + line numbers
+
+No source code was modified per requirements.
+
+Made changes.

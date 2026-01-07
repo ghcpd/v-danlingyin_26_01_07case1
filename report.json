@@ -1,0 +1,85 @@
+{
+  "summary": {
+    "total_issues": 5,
+    "high": 4,
+    "medium": 1,
+    "low": 0
+  },
+  "details": [
+    {
+      "id": 1,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "Parameters",
+      "issue_type": "Incorrect parameter requirement status",
+      "severity": "High",
+      "documented_behavior": "quantity is marked as 'Required: no' (optional)",
+      "actual_behavior": "quantity is a required field in CreateOrderInput interface (no optional marker)",
+      "citations": {
+        "doc": "README.md - Parameters table: 'quantity | number | no'",
+        "code": "api.ts:4 - 'quantity: number;' (without optional '?' modifier)"
+      },
+      "fix_summary": "Changed 'Required' column from 'no' to 'yes' for quantity parameter"
+    },
+    {
+      "id": 2,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "Parameters",
+      "issue_type": "Incorrect parameter constraint range",
+      "severity": "High",
+      "documented_behavior": "quantity accepts values from 0 to 10",
+      "actual_behavior": "quantity must be between 1 and 5 (inclusive); throws error otherwise",
+      "citations": {
+        "doc": "README.md - Parameters table: 'Number of items (0–10)'",
+        "code": "api.ts:18-20 - 'if (input.quantity < 1 || input.quantity > 5) { throw new Error(\"Invalid quantity\"); }'"
+      },
+      "fix_summary": "Updated quantity description from '(0–10)' to '(1–5)' to match validation logic"
+    },
+    {
+      "id": 3,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "Parameters",
+      "issue_type": "Incorrect parameter requirement status",
+      "severity": "High",
+      "documented_behavior": "couponCode is marked as 'Required: yes' (mandatory)",
+      "actual_behavior": "couponCode is optional in CreateOrderInput interface (has '?' modifier)",
+      "citations": {
+        "doc": "README.md - Parameters table: 'couponCode | string | yes'",
+        "code": "api.ts:5 - 'couponCode?: string;' (with optional '?' modifier)"
+      },
+      "fix_summary": "Changed 'Required' column from 'yes' to 'no' for couponCode parameter"
+    },
+    {
+      "id": 4,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "Returns",
+      "issue_type": "Incorrect return type structure",
+      "severity": "High",
+      "documented_behavior": "Returns object with 'success: boolean' and 'orderId?: string'",
+      "actual_behavior": "Returns object with 'orderId: string' (required) and 'totalPrice: number'",
+      "citations": {
+        "doc": "README.md - Returns section: '{ success: boolean; orderId?: string; }'",
+        "code": "api.ts:8-11 - 'export interface OrderResult { orderId: string; totalPrice: number; }' and api.ts:22-25 - actual return statement"
+      },
+      "fix_summary": "Replaced return type documentation with correct structure: { orderId: string; totalPrice: number; }"
+    },
+    {
+      "id": 5,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "Errors / Exception Handling",
+      "issue_type": "Missing error documentation",
+      "severity": "Medium",
+      "documented_behavior": "No error handling or exceptions documented",
+      "actual_behavior": "Throws Error with message 'Invalid quantity' when quantity is less than 1 or greater than 5",
+      "citations": {
+        "doc": "README.md - No 'Errors' or 'Throws' section present",
+        "code": "api.ts:13-15 - JSDoc comment: 'Throws error if quantitys - quantity < 1 - quantity > 5' and api.ts:18-20 - throw statement"
+      },
+      "fix_summary": "Added 'Errors' section documenting the thrown exception and its conditions"
+    }
+  ]
+}
