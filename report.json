@@ -1,0 +1,70 @@
+{
+  "summary": {
+    "total_issues": 4,
+    "high": 3,
+    "medium": 1,
+    "low": 0
+  },
+  "details": [
+    {
+      "id": 1,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "Parameters: quantity",
+      "issue_type": "Incorrect parameter definition (required / allowed range)",
+      "severity": "High",
+      "documented_behavior": "`quantity` — number, optional (no); allowed range: 0–10",
+      "actual_behavior": "`quantity` — required (non-optional); implementation throws when quantity < 1 or quantity > 5 (allowed range: 1–5). Fractional values are accepted by implementation.",
+      "citations": {
+        "doc": "README_backup.md — Parameters table row for `quantity`: `| quantity | number | no | Number of items (0–10) |` (lines 12)",
+        "code": "api.ts — CreateOrderInput.quantity (line 5); createOrder guard: `if (input.quantity < 1 || input.quantity > 5) { throw new Error(\"Invalid quantity\") }` (lines 21-23); function signature (line 20)"
+      },
+      "fix_summary": "Mark `quantity` as required and update allowed range to `>= 1` and `<= 5`; document that fractional values are accepted by the implementation or update implementation to require integers (recommendation)."
+    },
+    {
+      "id": 2,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "Parameters: couponCode",
+      "issue_type": "Incorrect parameter required/optional flag",
+      "severity": "High",
+      "documented_behavior": "`couponCode` — string, required (yes)",
+      "actual_behavior": "`couponCode` — optional (TypeScript: `couponCode?: string`). Callers may omit it.",
+      "citations": {
+        "doc": "README_backup.md — Parameters table row for `couponCode`: `| couponCode | string | yes | Discount coupon code |` (line 13)",
+        "code": "api.ts — `couponCode?: string` in `CreateOrderInput` (line 6)"
+      },
+      "fix_summary": "Mark `couponCode` as optional in the documentation (or change implementation if it must be required)."
+    },
+    {
+      "id": 3,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "Returns",
+      "issue_type": "Incorrect return value structure",
+      "severity": "High",
+      "documented_behavior": "Returns `{ success: boolean; orderId?: string }`",
+      "actual_behavior": "Returns `{ orderId: string; totalPrice: number }` (there is no `success` boolean; `orderId` is always present and `totalPrice` is returned)",
+      "citations": {
+        "doc": "README_backup.md — Returns block: `success: boolean; orderId?: string` (lines 17-21)",
+        "code": "api.ts — `export interface OrderResult { orderId: string; totalPrice: number; }` (lines 9-12) and function return (lines 25-27)"
+      },
+      "fix_summary": "Update the documented return type to include `orderId: string` and `totalPrice: number`; remove the `success` boolean from the contract."
+    },
+    {
+      "id": 4,
+      "api_name": "createOrder",
+      "doc_file": "README.md",
+      "section": "Errors / status codes",
+      "issue_type": "Missing error cases and HTTP-status guidance",
+      "severity": "Medium",
+      "documented_behavior": "No errors or status codes are described in the documentation",
+      "actual_behavior": "Implementation throws `Error(\"Invalid quantity\")` when quantity is out of allowed range; no HTTP mapping is provided by the code",
+      "citations": {
+        "doc": "README_backup.md — (no Errors section; no mention of quantity-related exceptions)",
+        "code": "api.ts — guard that throws on invalid quantity (lines 21-23)"
+      },
+      "fix_summary": "Document the `Invalid quantity` exception and, if the function is exposed over HTTP, recommend mapping it to `400 Bad Request`."
+    }
+  ]
+}
